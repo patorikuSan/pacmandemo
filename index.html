@@ -20,7 +20,7 @@
 				background-position: center;
 				background-size: cover;
 			}
-			div#cherry{
+			div.cherry{
 				background: url('cherry.gif');
 				background-repeat: no-repeat;
 				background-position: center;
@@ -63,7 +63,6 @@
 			<div id="pacman"></div>
 			<div id="score"></div>
 			<div id="ghost"></div>
-			<div id="cherry"></div>
 		</div>
 
 		<script>
@@ -89,10 +88,7 @@
 				x:4,
 				y:4
 			}
-			// var cherry = {
-			// 	x:6,
-			// 	y:6
-			// }
+
 			var cherry = 0;
 
 			function displayWorld(){
@@ -102,7 +98,7 @@
 					output += "\n<div class='row'>";
 					for(var j=0; j<world[i].length; j++){
 						if(world[i][j] == 3){
-							output += "<div id='cherry'></div>"
+							output += "<div class='cherry'></div>"
 						}
 						if(world[i][j] == 2){
 							output += "<div class='brick'></div>"
@@ -127,50 +123,44 @@
 			}
 			function displayScore(){
 				document.getElementById('score').innerHTML = score;
+				if(world[pacman.y][pacman.x] = 0){
+					score + 20;
+				}
 			}
 			function displayGhost(){
 				document.getElementById('ghost').style.left = ghost.x*20+"px";
 				document.getElementById('ghost').style.top = ghost.y*20+"px";
 			}
 
-			// function displayCherry(){
-			// 	document.getElementById('cherry').style.left = cherry.x*20+"px";
-			// 	document.getElementById('cherry').style.top = cherry.y*20+"px";
-			// }
 			displayWorld();
 			displayPacman();
 			displayScore();
 			displayGhost();
-			// displayCherry();
 
 			document.onkeydown = function(e){ //collision
 				if(e.keyCode == 37 && world[pacman.y][pacman.x-1] != 2){
 					pacman.x--;
-					ghost.x++;
+					ghost.y = pacman.x;
 				} else if(e.keyCode == 39 && world[pacman.y][pacman.x+1] != 2){
 					pacman.x++;
-					ghost.x--;
+					ghost.y = pacman.x;
 				} else if(e.keyCode == 38 && world[pacman.y-1][pacman.x] != 2){
 					pacman.y--;
-					ghost.x++;
+					ghost.x = pacman.y;
 				} else if(e.keyCode == 40 && world[pacman.y+1][pacman.x] != 2){
 					pacman.y++;
-
+					ghost.x = pacman.y;
 				}
-				//console.log(e);
 				
-				// coin munch
-				if(world[pacman.y][pacman.x] && world[ghost.y][ghost.x] == 1){
+				// coin munch https://youtu.be/QCUDsooQ_r0
+				if(world[pacman.y][pacman.x] == 1){
 					world[pacman.y][pacman.x] = 0;
 					score += 10;
-					cherry = score + 20;
 					displayWorld();
-					displayPacman();
 					displayScore();
-					displayGhost();
-					// displayCherry();
-				// console.log(e.keyCode);
 			}
+			displayPacman();
+			displayGhost();
 		}
 		</script>
 	</body>
